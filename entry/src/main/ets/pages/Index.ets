@@ -1,25 +1,32 @@
+import { SpinKit, SpinType } from '@pura/spinkit'
 import HttpUtils from "../utils/HttpUtils"
+import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World'
+  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+    Navigation(this.pageInfos) {
+      Column(){
+        Button("TO HOME").onClick(()=>{
+          this.pageInfos.pushPathByName("HomePage",null,true)
+        })
       }
-      .width('100%')
     }
-    .height('100%').onClick(e => {
-      HttpUtils<string>({
-        url: "/harmony/index/json"
-      }).then(val => {
-        console.log("lht-----val is ", val.data['links'])
-      })
-    })
+    .height('100%')
+    .width('100%')
+    .mode(NavigationMode.Stack)
+    .hideBackButton(true)
+    .titleMode(NavigationTitleMode.Mini)
+    .toolbarConfiguration([
+
+    ])
+  }
+
+  onPageShow(): void {
+    setTimeout(() => {
+    }, 3000)
   }
 }
