@@ -1,4 +1,3 @@
-import CacheUtils from "../utils/CacheUtils";
 
 @Builder
 export function PageOnBuilder() {
@@ -24,16 +23,9 @@ export struct HomePage {
 
         Column() {
           Button("设置").onClick((e) => {
-            CacheUtils.loadPreference(this,"ly")
-            CacheUtils.setValue("ly", "lht", "hhhhh")
-            console.log("lht---------设置 is ", e)
-
           })
 
           Button("获取").onClick(async (e) => {
-            const res = await CacheUtils.getValue("ly", "lht", "buhahhahaha")
-            console.log("lht---------res is ", res)
-            console.log("lht---------获取 is ", e, res)
 
           })
         }

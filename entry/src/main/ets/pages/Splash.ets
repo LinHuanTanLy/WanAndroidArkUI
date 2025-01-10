@@ -1,5 +1,6 @@
 import { SpinKit, SpinType } from '@pura/spinkit'
 import { router } from '@kit.ArkUI'
+import CacheUtils from '../utils/CacheUtils'
 
 @Entry
 @Component
@@ -14,12 +15,25 @@ struct Splash {
   }
 
   aboutToAppear(): void {
+    let context=this.getUIContext().getHostContext()
+    if(context){
+      CacheUtils.getSinglePreference(context)
+    }
     setTimeout(() => {
-      router.pushUrl(
-        { url: "pages/Index" }
-      ).then(() => {
-        router.clear()
-      })
+      if(CacheUtils.getUserLoginStatus()){
+        router.pushUrl(
+          { url: "pages/Index" }
+        ).then(() => {
+          router.clear()
+        })
+      }else{
+        router.pushUrl(
+          { url: "pages/loginAndRegister/Login" }
+        ).then(() => {
+          router.clear()
+        })
+      }
+
     }, 2000)
   }
 }

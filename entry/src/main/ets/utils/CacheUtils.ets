@@ -1,82 +1,53 @@
 import { preferences } from '@kit.ArkData'
 import { Context } from '@kit.AbilityKit'
+import { BusinessError } from '@kit.BasicServicesKit'
+
 /**
  * 缓存工具类
  */
+
+
+const CACHE_FILE_NAME = "ly_ARKUI_CACHE_FILE"
+
+
+const USER_LOGIN_STATUS="ly_ARKUI_LOGIN_STATUS";
+
 class CacheUtils {
-  private preFMap: Map<string, preferences.Preferences> = new Map()
+  private _preference?: preferences.Preferences | undefined
 
-  /**
-   * 读取
-   * @param context
-   * @param name
-   */
-  async loadPreference(context: Context, name: string) {
-    try {
-      const pref = await preferences.getPreferences(context, name)
-      this.preFMap.set(name, pref)
-    } catch (e) {
-      console.log("缓存失败")
-    }
+  initPreference(context: Context, name: string) {
+    this._preference = preferences.getPreferencesSync(context, { name: name })
+    return this
   }
 
-  /**
-   * 设置
-   * @param name
-   * @param key
-   * @param val
-   */
-  async setValue(name: string, key: string, val: preferences.ValueType) {
-    if (!this.preFMap.has(name)) {
-      return
-    }
-    try {
-      const pref = this.preFMap.get(name)
-      await pref?.put(key, val)
-      await pref?.flush()
-    } catch (e) {
-      console.log("put error", name, key, val)
-    }
-  }
-
-  /**
-   * 获取
-   * @param name
-   * @param key
-   * @param val
-   * @returns
-   */
-  async getValue(name: string, key: string, val: preferences.ValueType) {
-    if (!this.preFMap.has(name)) {
-      return
-    }
-    try {
-      const pref = this.preFMap.get(name)
-      return await pref?.get(key, val)
-    } catch (e) {
-      console.log("get error", name)
-      return
-    }
-  }
-
-  /**
-   * 删除
-   * @param name
-   * @param key
-   */
-  async deleteValue(name: string, key: string) {
-    if (!this.preFMap.has(name)) {
-      return
-    }
-    try {
-      const pref = this.preFMap.get(name)
-      await pref?.delete(key)
-    } catch (e) {
-      console.log("get error", name)
-    }
+  getSinglePreference(context: Context): CacheUtils {
+    return this.initPreference(context, CACHE_FILE_NAME)
   }
 
 
+  saveVal(key:string,value:preferences.ValueType){
+    this._preference?.putSync(key,value)
+    this._preference?.flush((err:BusinessError)=>{
+      if(err){
+        console.log("lht----saveVal error",err)
+      }
+    })
+  }
+  getVal<T>(key:string,defaultVal:preferences.ValueType):T{
+    return this._preference?.getSync(key,defaultVal)as T
+  }
+
+
+
+  updateUserLoginStatus(isLogin:boolean){
+    this.saveVal(USER_LOGIN_STATUS,isLogin)
+  }
+
+  getUserLoginStatus(){
+    return this.getVal<Boolean>(USER_LOGIN_STATUS,false)
+  }
 }
+
+
 
 export default new CacheUtils()
