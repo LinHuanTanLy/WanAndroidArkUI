@@ -1,6 +1,3 @@
-import { SpinKit, SpinType } from '@pura/spinkit'
-import HttpUtils from "../utils/HttpUtils"
-import { router } from '@kit.ArkUI'
 import { TabComponent } from '@cornflower/tabslayout'
 import { HomePage } from './Home'
 
@@ -36,36 +33,36 @@ struct Index {
   }
 
   build() {
-      Tabs({
-        barPosition: BarPosition.End, controller: this.controller
-      }) {
-        TabContent() {
-          HomePage()
-        }.tabBar(this.TextBuilder(0, '首页'))
+    Tabs({
+      barPosition: BarPosition.End, controller: this.controller
+    }) {
+      TabContent() {
+        HomePage()
+      }.tabBar(this.TextBuilder(0, '首页'))
 
-        TabContent() {
-          Column() {
-            Text("体系").fontSize(32)
-          }.width('100%')
-        }.tabBar(this.TextBuilder(1, '体系'))
+      TabContent() {
+        Column() {
+          Text("体系").fontSize(32)
+        }.width('100%')
+      }.tabBar(this.TextBuilder(1, '体系'))
 
-        TabContent() {
-        }.tabBar(this.AddBuilder())
+      TabContent() {
+      }.tabBar(this.AddBuilder())
 
-        TabContent() {
-          Column() {
-            Text("广场").fontSize(32)
-          }.width('100%')
-        }.tabBar(this.TextBuilder(3, '广场'))
+      TabContent() {
+        Column() {
+          Text("广场").fontSize(32)
+        }.width('100%')
+      }.tabBar(this.TextBuilder(3, '广场'))
 
-        TabContent() {
-          Column() {
-            Text("我的").fontSize(32)
-          }.width('100%')
-        }.tabBar(this.TextBuilder(4, '我的'))
-      }.onChange((index) => {
-        this.currentIndex = index;
-      })
+      TabContent() {
+        Column() {
+          Text("我的").fontSize(32)
+        }.width('100%')
+      }.tabBar(this.TextBuilder(4, '我的'))
+    }.onChange((index) => {
+      this.currentIndex = index;
+    })
   }
 
   onPageShow(): void {

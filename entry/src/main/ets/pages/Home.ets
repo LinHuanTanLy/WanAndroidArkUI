@@ -1,14 +1,16 @@
+import CacheUtils from "../utils/CacheUtils";
+
 @Builder
-export function PageOnBuilder(){
+export function PageOnBuilder() {
   HomePage()
 }
 
 @Component
-export  struct HomePage {
+export struct HomePage {
   @State message: string = 'this is home';
 
   build() {
-    NavDestination(){
+    NavDestination() {
       RelativeContainer() {
         Text(this.message)
           .id('HomePageHelloWorld')
@@ -18,6 +20,23 @@ export  struct HomePage {
             center: { anchor: '__container__', align: VerticalAlign.Center },
             middle: { anchor: '__container__', align: HorizontalAlign.Center }
           })
+
+
+        Column() {
+          Button("设置").onClick((e) => {
+            CacheUtils.loadPreference(this,"ly")
+            CacheUtils.setValue("ly", "lht", "hhhhh")
+            console.log("lht---------设置 is ", e)
+
+          })
+
+          Button("获取").onClick(async (e) => {
+            const res = await CacheUtils.getValue("ly", "lht", "buhahhahaha")
+            console.log("lht---------res is ", res)
+            console.log("lht---------获取 is ", e, res)
+
+          })
+        }
       }
       .height('100%')
       .width('100%')
