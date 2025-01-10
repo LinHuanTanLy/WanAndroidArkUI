@@ -4,7 +4,7 @@ export function PageOnBuilder(){
 }
 
 @Component
-struct HomePage {
+export  struct HomePage {
   @State message: string = 'this is home';
 
   build() {

@@ -7,6 +7,7 @@
   "license": "",
   "dependencies": {
     "@ohos/axios": "2.2.4",
+    "@cornflower/tabslayout": "1.0.2"
   }
 }
 
